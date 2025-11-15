@@ -38,6 +38,19 @@
             max-height: calc(100vh - 120px);
             overflow-y: auto;
         }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient-animation 4s ease infinite;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -53,7 +66,7 @@
                         <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                             <i class="fas fa-cash-register text-white text-xl"></i>
                         </div>
-                        <h1 class="text-xl font-bold text-white">EasyPOS</h1>
+                        <h1 class="text-xl font-bold gradient-text">EasyPOS</h1>
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-8">
