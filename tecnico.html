@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Técnica - EasyPOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .vanta-canvas { position: fixed !important; top: 0; left: 0; z-index: -1; }
+        .glass-effect { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.1); }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .code-block {
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        .code-block pre {
+            margin: 0;
+            color: #e5e7eb;
+        }
+        .tech-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .toc-fixed {
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Background Animation -->
+    <div id="vanta-bg" class="fixed inset-0 z-0"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cash-register text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-white">EasyPOS</h1>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:text-blue-200 transition-colors">Inicio</a>
+                    <a href="manual.html" class="text-white hover:text-blue-200 transition-colors">Manual de Usuario</a>
+                    <a href="#tecnico" class="text-white hover:text-blue-200 transition-colors">Documentación Técnica</a>
+                    <a href="api.html" class="text-white hover:text-blue-200 transition-colors">API Reference</a>
+                </div>
+                <button type="button" class="md:hidden text-white p-2" aria-label="Menú móvil">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white text-shadow">
+                    Documentación Técnica
+                </h1>
+                <p class="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                    Guía completa para desarrolladores sobre la arquitectura, tecnologías y personalización de EasyPOS
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:w-1/4">
+                <div class="toc-fixed bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-bold mb-4 text-gray-800">
+                        <i class="fas fa-list mr-2 text-purple-500"></i>Contenidos
+                    </h3>
+                    <nav class="space-y-2">
+                        <a href="#arquitectura" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Arquitectura del Sistema</a>
+                        <a href="#tecnologias" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Stack Tecnológico</a>
+                        <a href="#frontend" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Frontend (React Native)</a>
+                        <a href="#backend" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Backend (Node.js)</a>
+                        <a href="#database" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Base de Datos</a>
+                        <a href="#seguridad" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Seguridad</a>
+                        <a href="#despliegue" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Despliegue</a>
+                        <a href="#personalizacion" class="block text-sm text-gray-600 hover:text-purple-500 py-1">Personalización</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4 space-y-12">
+                <!-- Architecture Overview -->
+                <section id="arquitectura" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-sitemap text-blue-500 mr-3"></i>Arquitectura del Sistema
+                    </h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-lg text-gray-600 mb-6">
+                            EasyPOS está construido sobre una arquitectura de tres capas moderna y escalable, 
+                            diseñada para garantizar alta disponibilidad, seguridad y mantenibilidad.
+                        </p>
+
+                        <!-- Architecture Diagram -->
+                        <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800">Diagrama de Arquitectura</h3>
+                            <div class="text-center">
+                                <div class="bg-white rounded-lg p-6 border-2 border-dashed border-gray-300">
+                                    <div class="grid md:grid-cols-3 gap-6">
+                                        <!-- Presentation Layer -->
+                                        <div class="tech-card rounded-lg p-4">
+                                            <div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                                <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                                            </div>
+                                            <h4 class="font-semibold text-white mb-2">Capa de Presentación</h4>
+                                            <p class="text-gray-200 text-sm mb-3">React Native + Expo</p>
+                                            <ul class="text-xs text-gray-300 space-y-1">
+                                                <li>• Interfaz de usuario</li>
+                                                <li>• Gestión de estado local</li>
+                                                <li>• Operación offline</li>
+                                                <li>• Sincronización</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Business Logic Layer -->
+                                        <div class="tech-card rounded-lg p-4">
+                                            <div class="w-16 h-16 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                                <i class="fas fa-cogs text-white text-2xl"></i>
+                                            </div>
+                                            <h4 class="font-semibold text-white mb-2">Lógica de Negocio</h4>
+                                            <p class="text-gray-200 text-sm mb-3">Node.js + Express</p>
+                                            <ul class="text-xs text-gray-300 space-y-1">
+                                                <li>• API RESTful</li>
+                                                <li>• Autenticación JWT</li>
+                                                <li>• Procesamiento analytics</li>
+                                                <li>• Integraciones externas</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Data Layer -->
+                                        <div class="tech-card rounded-lg p-4">
+                                            <div class="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                                <i class="fas fa-database text-white text-2xl"></i>
+                                            </div>
+                                            <h4 class="font-semibold text-white mb-2">Capa de Datos</h4>
+                                            <p class="text-gray-200 text-sm mb-3">PostgreSQL</p>
+                                            <ul class="text-xs text-gray-300 space-y-1">
+                                                <li>• Transacciones ACID</li>
+                                                <li>• Integridad referencial</li>
+                                                <li>• Índices optimizados</li>
+                                                <li>• Respaldos automáticos</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Principles -->
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
+                            <h3 class="text-lg font-semibold text-blue-800 mb-3">Principios de Diseño</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="font-semibold text-blue-700 mb-2">SOLID Principles</h4>
+                                    <ul class="text-blue-600 text-sm space-y-1">
+                                        <li>• Single Responsibility</li>
+                                        <li>• Open/Closed Principle</li>
+                                        <li>• Liskov Substitution</li>
+                                        <li>• Interface Segregation</li>
+                                        <li>• Dependency Inversion</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-blue-700 mb-2">Patrones de Diseño</h4>
+                                    <ul class="text-blue-600 text-sm space-y-1">
+                                        <li>• MVC (Model-View-Controller)</li>
+                                        <li>• Repository Pattern</li>
+                                        <li>• Factory Pattern</li>
+                                        <li>• Observer Pattern</li>
+                                        <li>• Strategy Pattern</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technology Stack -->
+                <section id="tecnologias" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-layer-group text-green-500 mr-3"></i>Stack Tecnológico
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Frontend Technologies -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Frontend - Aplicación Móvil</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                                    <h4 class="font-semibold text-blue-800 mb-4">
+                                        <i class="fab fa-react mr-2"></i>React Native & Expo
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-blue-700">React Native</span>
+                                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">0.81.5</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-blue-700">React</span>
+                                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">19.1.0</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-blue-700">Expo SDK</span>
+                                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">54.0.19</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-blue-700">TypeScript</span>
+                                            <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">5.0+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                                    <h4 class="font-semibold text-purple-800 mb-4">
+                                        <i class="fas fa-puzzle-piece mr-2"></i>Librerías Principales
+                                    </h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-database text-purple-600 mr-2"></i>
+                                            <span class="text-purple-700">AsyncStorage</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-network-wired text-purple-600 mr-2"></i>
+                                            <span class="text-purple-700">Axios</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-chart-bar text-purple-600 mr-2"></i>
+                                            <span class="text-purple-700">Victory Native</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-camera text-purple-600 mr-2"></i>
+                                            <span class="text-purple-700">Expo Camera</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-route text-purple-600 mr-2"></i>
+                                            <span class="text-purple-700">Expo Router</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backend Technologies -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Backend - API RESTful</h3>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+                                    <h4 class="font-semibold text-green-800 mb-3">
+                                        <i class="fab fa-node-js mr-2"></i>Runtime
+                                    </h4>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between">
+                                            <span class="text-green-700">Node.js</span>
+                                            <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-xs">22.20.0</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-green-700">Express.js</span>
+                                            <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-xs">5.1.0</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-green-700">JavaScript</span>
+                                            <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-xs">ES6+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+                                    <h4 class="font-semibold text-orange-800 mb-3">
+                                        <i class="fas fa-shield-alt mr-2"></i>Seguridad
+                                    </h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-key text-orange-600 mr-2 text-sm"></i>
+                                            <span class="text-orange-700 text-sm">JWT</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-lock text-orange-600 mr-2 text-sm"></i>
+                                            <span class="text-orange-700 text-sm">bcrypt</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-shield text-orange-600 mr-2 text-sm"></i>
+                                            <span class="text-orange-700 text-sm">CORS</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-check text-orange-600 mr-2 text-sm"></i>
+                                            <span class="text-orange-700 text-sm">Helmet</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-4 border border-red-200">
+                                    <h4 class="font-semibold text-red-800 mb-3">
+                                        <i class="fas fa-clock mr-2"></i>Automatización
+                                    </h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-calendar text-red-600 mr-2 text-sm"></i>
+                                            <span class="text-red-700 text-sm">node-cron</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-tasks text-red-600 mr-2 text-sm"></i>
+                                            <span class="text-red-700 text-sm">Bull Queue</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <i class="fas fa-envelope text-red-600 mr-2 text-sm"></i>
+                                            <span class="text-red-700 text-sm">Nodemailer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Database -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Base de Datos</h3>
+                            <div class="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg p-6 border border-indigo-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="font-semibold text-indigo-800">
+                                        <i class="fas fa-database mr-2"></i>PostgreSQL
+                                    </h4>
+                                    <span class="bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full text-sm">15.0+</span>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="font-semibold text-indigo-700 mb-2">Características</h5>
+                                        <ul class="text-indigo-600 text-sm space-y-1">
+                                            <li>• Transacciones ACID</li>
+                                            <li>• Integridad referencial</li>
+                                            <li>• Índices avanzados</li>
+                                            <li>• Soporte JSON/JSONB</li>
+                                            <li>• Funciones de ventana</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-indigo-700 mb-2">Extensiones</h5>
+                                        <ul class="text-indigo-600 text-sm space-y-1">
+                                            <li>• pg_trgm (búsqueda fuzzy)</li>
+                                            <li>• uuid-ossp (generación UUID)</li>
+                                            <li>• postgis (datos geoespaciales)</li>
+                                            <li>• pgcrypto (encriptación)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Frontend Architecture -->
+                <section id="frontend" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fab fa-react text-blue-500 mr-3"></i>Frontend - React Native
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Project Structure -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Estructura del Proyecto</h3>
+                            <div class="code-block mb-4">
+                                <pre><code>easypos-mobile/
+├── app/                    # Expo Router - App Directory
+│   ├── (auth)/            # Rutas de autenticación
+│   ├── (tabs)/            # Navegación por pestañas
+│   └── +not-found.tsx     # Página 404
+├── components/            # Componentes reutilizables
+│   ├── ui/               # Componentes UI básicos
+│   ├── forms/            # Componentes de formularios
+│   └── charts/           # Componentes de gráficos
+├── hooks/                # Custom Hooks
+├── services/             # Servicios y APIs
+├── store/                # Estado global (Context API)
+├── utils/                # Utilidades y helpers
+└── types/                # Definiciones TypeScript</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Key Components -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Componentes Principales</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gray-50 rounded-lg p-6">
+                                    <h4 class="font-semibold text-gray-800 mb-3">
+                                        <i class="fas fa-shield-alt text-blue-500 mr-2"></i>AlertProvider
+                                    </h4>
+                                    <p class="text-gray-600 text-sm mb-3">
+                                        Gestión global de alertas y notificaciones usando Context API.
+                                    </p>
+                                    <div class="code-block text-xs">
+                                        <pre><code>const AlertContext = createContext&lt;AlertContextType&gt;();
+
+export const AlertProvider: React.FC = ({ children }) => {
+  const [alerts, setAlerts] = useState&lt;Alert[]&gt;([]);
+  
+  const showAlert = (message: string, type: AlertType) =&gt; {
+    const alert: Alert = {
+      id: generateId(),
+      message,
+      type,
+      timestamp: Date.now()
+    };
+    setAlerts(prev =&gt; [...prev, alert]);
+  };
+  
+  return (
+    &lt;AlertContext.Provider value={{ alerts, showAlert, dismissAlert }}&gt;
+      {children}
+    &lt;/AlertContext.Provider&gt;
+  );
+};</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gray-50 rounded-lg p-6">
+                                    <h4 class="font-semibold text-gray-800 mb-3">
+                                        <i class="fas fa-camera text-green-500 mr-2"></i>QRScanner
+                                    </h4>
+                                    <p class="text-gray-600 text-sm mb-3">
+                                        Componente para escaneo de códigos QR usando expo-camera.
+                                    </p>
+                                    <div class="code-block text-xs">
+                                        <pre><code>export const QRScanner: React.FC&lt;QRScannerProps&gt; = ({ onScan }) =&gt; {
+  const [hasPermission, setHasPermission] = useState&lt;boolean | null&gt;(null);
+  const [scanned, setScanned] = useState(false);
+  
+  useEffect(() =&gt; {
+    (async () =&gt; {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+  
+  const handleBarCodeScanned = ({ data }: BarCodeScanningResult) =&gt; {
+    setScanned(true);
+    onScan(data);
+  };
+  
+  return (
+    &lt;Camera
+      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      style={StyleSheet.absoluteFillObject}
+    /&gt;
+  );
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- State Management -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Gestión de Estado</h3>
+                            <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                                <h4 class="font-semibold text-purple-800 mb-3">Context API Pattern</h4>
+                                <p class="text-purple-700 text-sm mb-4">
+                                    EasyPOS utiliza Context API para la gestión de estado global, evitando 
+                                    la complejidad de Redux para aplicaciones de tamaño medio.
+                                </p>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <div class="bg-white rounded-lg p-3">
+                                        <h5 class="font-semibold text-gray-800 text-sm mb-2">AuthContext</h5>
+                                        <p class="text-gray-600 text-xs">Gestión de autenticación y usuario</p>
+                                    </div>
+                                    <div class="bg-white rounded-lg p-3">
+                                        <h5 class="font-semibold text-gray-800 text-sm mb-2">CartContext</h5>
+                                        <p class="text-gray-600 text-xs">Estado del carrito de compras</p>
+                                    </div>
+                                    <div class="bg-white rounded-lg p-3">
+                                        <h5 class="font-semibold text-gray-800 text-sm mb-2">ProductContext</h5>
+                                        <p class="text-gray-600 text-xs">Gestión de productos e inventario</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Offline Functionality -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Funcionalidad Offline</h3>
+                            <p class="text-gray-600 mb-4">
+                                La aplicación mantiene funcionalidad completa sin conexión mediante 
+                                estrategias de almacenamiento local y sincronización.
+                            </p>
+                            
+                            <div class="code-block">
+                                <pre><code>class OfflineStorage {
+  private static instance: OfflineStorage;
+  
+  public static getInstance(): OfflineStorage {
+    if (!OfflineStorage.instance) {
+      OfflineStorage.instance = new OfflineStorage();
+    }
+    return OfflineStorage.instance;
+  }
+  
+  async saveTransaction(transaction: Transaction): Promise&lt;void&gt; {
+    const transactions = await this.getPendingTransactions();
+    transactions.push({
+      ...transaction,
+      id: generateId(),
+      timestamp: Date.now(),
+      synced: false
+    });
+    await AsyncStorage.setItem('pending_transactions', JSON.stringify(transactions));
+  }
+  
+  async syncPendingTransactions(): Promise&lt;void&gt; {
+    const transactions = await this.getPendingTransactions();
+    const unsynced = transactions.filter(t => !t.synced);
+    
+    for (const transaction of unsynced) {
+      try {
+        await apiService.createTransaction(transaction);
+        transaction.synced = true;
+      } catch (error) {
+        console.error('Sync failed for transaction:', transaction.id);
+      }
+    }
+    
+    await AsyncStorage.setItem('pending_transactions', JSON.stringify(transactions));
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Backend Architecture -->
+                <section id="backend" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fab fa-node-js text-green-500 mr-3"></i>Backend - Node.js API
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- API Structure -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Estructura de la API</h3>
+                            <div class="code-block mb-4">
+                                <pre><code>easypos-api/
+├── src/
+│   ├── controllers/      # Controladores de lógica de negocio
+│   ├── middleware/       # Middleware personalizado
+│   ├── models/          # Modelos de datos
+│   ├── routes/          # Definición de rutas
+│   ├── services/        # Servicios y utilidades
+│   ├── utils/           # Funciones auxiliares
+│   └── validators/      # Validación de datos
+├── config/              # Configuración del sistema
+├── tests/               # Tests unitarios y de integración
+└── docs/                # Documentación de la API</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Authentication System -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Sistema de Autenticación</h3>
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-800 mb-3">JWT Implementation</h4>
+                                <div class="code-block text-sm">
+                                    <pre><code>class AuthService {
+  generateToken(user: User): string {
+    const payload = {
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+      businessId: user.businessId
+    };
+    
+    return jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: '24h',
+      issuer: 'easypos-api'
+    });
+  }
+  
+  verifyToken(token: string): JwtPayload {
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    } catch (error) {
+      throw new UnauthorizedError('Invalid token');
+    }
+  }
+  
+  async hashPassword(password: string): Promise&lt;string&gt; {
+    return bcrypt.hash(password, 10);
+  }
+  
+  async comparePasswords(password: string, hashedPassword: string): Promise&lt;boolean&gt; {
+    return bcrypt.compare(password, hashedPassword);
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Role-Based Access Control -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Control de Acceso RBAC</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                                    <h4 class="font-semibold text-blue-800 mb-3">Roles Definidos</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                                            <div>
+                                                <span class="font-semibold text-blue-800">admin</span>
+                                                <p class="text-blue-600 text-sm">Acceso completo al sistema</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                            <div>
+                                                <span class="font-semibold text-blue-800">manager</span>
+                                                <p class="text-blue-600 text-sm">Gestión de productos y reportes</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                            <div>
+                                                <span class="font-semibold text-blue-800">cashier</span>
+                                                <p class="text-blue-600 text-sm">Procesamiento de ventas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                                    <h4 class="font-semibold text-purple-800 mb-3">Middleware de Autorización</h4>
+                                    <div class="code-block text-xs">
+                                        <pre><code>export const authorize = (roles: string[]) =&gt; {
+  return (req: Request, res: Response, next: NextFunction) =&gt; {
+    const user = req.user as User;
+    
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    if (!roles.includes(user.role)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    
+    next();
+  };
+};
+
+// Uso en rutas
+router.post('/products', 
+  authenticate, 
+  authorize(['admin', 'manager']), 
+  productController.create
+);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Analytics Processing -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Procesamiento de Analytics</h3>
+                            <div class="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg p-6 border border-indigo-200">
+                                <h4 class="font-semibold text-indigo-800 mb-3">Sistema de Tareas Programadas</h4>
+                                <p class="text-indigo-700 text-sm mb-4">
+                                    Utilizamos node-cron para ejecutar tareas de análisis y generación de reportes.
+                                </p>
+                                <div class="code-block text-sm">
+                                    <pre><code>class AnalyticsScheduler {
+  constructor() {
+    this.setupCronJobs();
+  }
+  
+  private setupCronJobs(): void {
+    // Alertas de stock - cada hora
+    cron.schedule('0 * * * *', async () =&gt; {
+      await this.checkStockAlerts();
+    });
+    
+    // Reportes diarios - cada día a las 6 AM
+    cron.schedule('0 6 * * *', async () =&gt; {
+      await this.generateDailyReports();
+    });
+    
+    // Predicciones de ventas - cada semana
+    cron.schedule('0 6 * * 1', async () =&gt; {
+      await this.generateSalesPredictions();
+    });
+  }
+  
+  private async checkStockAlerts(): Promise&lt;void&gt; {
+    const lowStockProducts = await Product.findAll({
+      where: {
+        stock: {
+          [Op.lte]: sequelize.col('min_stock')
+        }
+      }
+    });
+    
+    for (const product of lowStockProducts) {
+      await this.createStockAlert(product);
+    }
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Database Schema -->
+                <section id="database" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-database text-orange-500 mr-3"></i>Base de Datos
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Schema Overview -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Esquema de Base de Datos</h3>
+                            <p class="text-gray-600 mb-6">
+                                El esquema de PostgreSQL está diseñado para garantizar la integridad de los datos 
+                                y optimizar las consultas más comunes.
+                            </p>
+                            
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-800 mb-4">Principales Tablas</h4>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="font-semibold text-gray-700 mb-3">Tablas Core</h5>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-users text-blue-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">users</span>
+                                            </div>
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-box text-green-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">products</span>
+                                            </div>
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-truck text-orange-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">providers</span>
+                                            </div>
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-shopping-cart text-purple-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">sales</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-gray-700 mb-3">Tablas de Soporte</h5>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">stock_alerts</span>
+                                            </div>
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-chart-line text-indigo-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">analytics_jobs</span>
+                                            </div>
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-magic text-pink-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">sales_predictions</span>
+                                            </div>
+                                            <div class="flex items-center p-2 bg-white rounded border">
+                                                <i class="fas fa-cog text-gray-500 mr-3"></i>
+                                                <span class="text-gray-700 font-mono text-sm">model_metrics</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sample Schema -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Ejemplo: Esquema de Productos</h3>
+                            <div class="code-block">
+                                <pre><code>CREATE TABLE products (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  sku VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  category_id INTEGER REFERENCES categories(id),
+  price DECIMAL(10,2) NOT NULL,
+  cost DECIMAL(10,2),
+  stock INTEGER NOT NULL DEFAULT 0,
+  min_stock INTEGER NOT NULL DEFAULT 10,
+  barcode VARCHAR(255),
+  image_url TEXT,
+  is_active BOOLEAN DEFAULT true,
+  business_id UUID REFERENCES businesses(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  -- Índices para optimización
+  INDEX idx_products_sku (sku),
+  INDEX idx_products_category (category_id),
+  INDEX idx_products_business (business_id),
+  INDEX idx_products_active (is_active)
+);
+
+-- Función para actualizar timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Trigger para updated_at
+CREATE TRIGGER update_products_updated_at BEFORE UPDATE
+  ON products FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Performance Optimizations -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Optimizaciones de Rendimiento</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                                    <h4 class="font-semibold text-blue-800 mb-3">
+                                        <i class="fas fa-tachometer-alt mr-2"></i>Índices Estratégicos
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div class="bg-white rounded-lg p-3">
+                                            <h5 class="font-semibold text-gray-800 text-sm">Búsqueda de Productos</h5>
+                                            <p class="text-gray-600 text-xs">Índice compuesto en (name, sku) con pg_trgm</p>
+                                        </div>
+                                        <div class="bg-white rounded-lg p-3">
+                                            <h5 class="font-semibold text-gray-800 text-sm">Reportes de Ventas</h5>
+                                            <p class="text-gray-600 text-xs">Índices en (created_at, business_id) para filtros de fecha</p>
+                                        </div>
+                                        <div class="bg-white rounded-lg p-3">
+                                            <h5 class="font-semibold text-gray-800 text-sm">Analytics</h5>
+                                            <p class="text-gray-600 text-xs">Índices parciales para datos activos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                                    <h4 class="font-semibold text-green-800 mb-3">
+                                        <i class="fas fa-memory mr-2"></i>Cache y Materialización
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div class="bg-white rounded-lg p-3">
+                                            <h5 class="font-semibold text-gray-800 text-sm">Vistas Materializadas</h5>
+                                            <p class="text-gray-600 text-xs">Reportes pre-calculados para dashboards</p>
+                                        </div>
+                                        <div class="bg-white rounded-lg p-3">
+                                            <h5 class="font-semibold text-gray-800 text-sm">Redis Cache</h5>
+                                            <p class="text-gray-600 text-xs">Cache de sesiones y datos frecuentes</p>
+                                        </div>
+                                        <div class="bg-white rounded-lg p-3">
+                                            <h5 class="font-semibold text-gray-800 text-sm">Connection Pooling</h5>
+                                            <p class="text-gray-600 text-xs">Pool optimizado de conexiones DB</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security -->
+                <section id="seguridad" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-shield-alt text-red-500 mr-3"></i>Seguridad
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Security Layers -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Capas de Seguridad</h3>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-6 border border-red-200">
+                                    <div class="w-16 h-16 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-lock text-white text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-red-800 mb-3 text-center">Autenticación</h4>
+                                    <ul class="text-red-700 text-sm space-y-2">
+                                        <li>• JWT con expiración 24h</li>
+                                        <li>• Refresh tokens seguros</li>
+                                        <li>• bcrypt para contraseñas</li>
+                                        <li>• Rate limiting por IP</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                                    <div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-user-shield text-white text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-blue-800 mb-3 text-center">Autorización</h4>
+                                    <ul class="text-blue-700 text-sm space-y-2">
+                                        <li>• Control RBAC</li>
+                                        <li>• Permisos granulares</li>
+                                        <li>• Validación de roles</li>
+                                        <li>• Auditoría de accesos</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                                    <div class="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-database text-white text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-green-800 mb-3 text-center">Datos</h4>
+                                    <ul class="text-green-700 text-sm space-y-2">
+                                        <li>• Encriptación en reposo</li>
+                                        <li>• SSL/TLS en tránsito</li>
+                                        <li>• Validación de entrada</li>
+                                        <li>• Sanitización SQL</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Headers -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Headers de Seguridad</h3>
+                            <div class="code-block">
+                                <pre><code>app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  },
+  noSniff: true,
+  xssFilter: true,
+  referrerPolicy: { policy: "same-origin" }
+}));
+
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
+  credentials: true,
+  optionsSuccessStatus: 200
+}));</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Input Validation -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Validación de Entrada</h3>
+                            <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-6 border border-yellow-200">
+                                <h4 class="font-semibold text-yellow-800 mb-3">Middleware de Validación</h4>
+                                <div class="code-block text-sm">
+                                    <pre><code>export const validateRequest = (schema: Joi.ObjectSchema) =&gt; {
+  return (req: Request, res: Response, next: NextFunction) =&gt; {
+    const { error } = schema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true
+    });
+    
+    if (error) {
+      const errors = error.details.map(detail =&gt; ({
+        field: detail.path.join('.'),
+        message: detail.message
+      }));
+      
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: errors
+      });
+    }
+    
+    next();
+  };
+};
+
+// Uso en rutas
+router.post('/products',
+  authenticate,
+  authorize(['admin', 'manager']),
+  validateRequest(productSchema),
+  productController.create
+);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Deployment -->
+                <section id="despliegue" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-rocket text-purple-500 mr-3"></i>Despliegue
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Environment Setup -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Variables de Entorno</h3>
+                            <div class="code-block">
+                                <pre><code># Backend Configuration
+NODE_ENV=production
+PORT=3000
+API_URL=https://api.easypos.com
+FRONTEND_URL=https://app.easypos.com
+
+# Database
+DATABASE_URL=postgresql://user:password@host:5432/easypos
+DB_POOL_MIN=2
+DB_POOL_MAX=10
+
+# Security
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=24h
+BCRYPT_ROUNDS=10
+
+# External Services
+WHATSAPP_API_KEY=your-whatsapp-api-key
+N8N_WEBHOOK_URL=https://n8n.easypos.com/webhook
+
+# Monitoring
+SENTRY_DSN=your-sentry-dsn
+LOG_LEVEL=info</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Docker Configuration -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Dockerización</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Dockerfile - Backend</h4>
+                                    <div class="code-block text-xs">
+                                        <pre><code>FROM node:22.20.0-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
+COPY . .
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodejs -u 1001
+
+# Change ownership
+RUN chown -R nodejs:nodejs /app
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+# Start application
+CMD ["node", "dist/server.js"]</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">docker-compose.yml</h4>
+                                    <div class="code-block text-xs">
+                                        <pre><code>version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: easypos
+      POSTGRES_USER: easypos_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./backend
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://easypos_user:${DB_PASSWORD}@postgres:5432/easypos
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CI/CD Pipeline -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Pipeline CI/CD</h3>
+                            <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                                <h4 class="font-semibold text-green-800 mb-3">GitHub Actions Workflow</h4>
+                                <div class="code-block text-sm">
+                                    <pre><code>name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.20.0'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Build application
+        run: npm run build
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /opt/easypos
+            docker-compose pull
+            docker-compose up -d --build</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Customization -->
+                <section id="personalizacion" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-palette text-indigo-500 mr-3"></i>Personalización
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Theming -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Sistema de Temas</h3>
+                            <p class="text-gray-600 mb-4">
+                                EasyPOS incluye un sistema de temas flexible que permite personalizar 
+                                la apariencia de la aplicación según las necesidades de tu negocio.
+                            </p>
+                            
+                            <div class="code-block">
+                                <pre><code>// theme.ts
+export interface Theme {
+  colors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+    background: string;
+    surface: string;
+    text: string;
+    error: string;
+    success: string;
+    warning: string;
+  };
+  fonts: {
+    regular: string;
+    medium: string;
+    bold: string;
+  };
+  spacing: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+  };
+  borderRadius: {
+    sm: number;
+    md: number;
+    lg: number;
+    round: number;
+  };
+}
+
+// Tema por defecto
+export const defaultTheme: Theme = {
+  colors: {
+    primary: '#3B82F6',
+    secondary: '#8B5CF6',
+    accent: '#10B981',
+    background: '#F9FAFB',
+    surface: '#FFFFFF',
+    text: '#111827',
+    error: '#EF4444',
+    success: '#10B981',
+    warning: '#F59E0B'
+  },
+  fonts: {
+    regular: 'Inter-Regular',
+    medium: 'Inter-Medium',
+    bold: 'Inter-Bold'
+  },
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32
+  },
+  borderRadius: {
+    sm: 4,
+    md: 8,
+    lg: 12,
+    round: 50
+  }
+};</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Plugin System -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Sistema de Plugins</h3>
+                            <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                                <h4 class="font-semibold text-purple-800 mb-3">Arquitectura de Plugins</h4>
+                                <p class="text-purple-700 text-sm mb-4">
+                                    Los plugins permiten extender la funcionalidad de EasyPOS sin modificar el código base.
+                                </p>
+                                <div class="code-block text-sm">
+                                    <pre><code>interface Plugin {
+  name: string;
+  version: string;
+  description: string;
+  
+  // Lifecycle methods
+  initialize(): Promise&lt;void&gt;;
+  activate(): Promise&lt;void&gt;;
+  deactivate(): Promise&lt;void&gt;;
+  
+  // Hooks
+  beforeSale?(sale: Sale): Promise&lt;Sale&gt;;
+  afterSale?(sale: Sale): Promise&lt;void&gt;;
+  beforeProductCreate?(product: Product): Promise&lt;Product&gt;;
+  
+  // UI Extensions
+  getAdminRoutes?(): Route[];
+  getWidgetComponents?(): Component[];
+}
+
+// Ejemplo de plugin
+class LoyaltyPlugin implements Plugin {
+  name = 'Loyalty Program';
+  version = '1.0.0';
+  description = 'Sistema de puntos de fidelidad para clientes';
+  
+  async afterSale(sale: Sale): Promise&lt;void&gt; {
+    const points = Math.floor(sale.total * 0.1); // 10% en puntos
+    await this.awardPoints(sale.customerId, points);
+  }
+  
+  getWidgetComponents(): Component[] {
+    return [LoyaltyWidget, PointsBalanceWidget];
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Integrations -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Integraciones Personalizadas</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gray-50 rounded-lg p-6">
+                                    <h4 class="font-semibold text-gray-800 mb-3">
+                                        <i class="fas fa-webhook text-blue-500 mr-2"></i>Webhooks
+                                    </h4>
+                                    <p class="text-gray-600 text-sm mb-3">
+                                        Sistema de webhooks para notificaciones en tiempo real.
+                                    </p>
+                                    <div class="code-block text-xs">
+                                        <pre><code>interface WebhookEvent {
+  event: string;
+  timestamp: number;
+  data: any;
+  signature: string;
+}
+
+class WebhookService {
+  async sendWebhook(event: string, data: any, url: string): Promise&lt;void&gt; {
+    const payload: WebhookEvent = {
+      event,
+      timestamp: Date.now(),
+      data,
+      signature: this.generateSignature(data)
+    };
+    
+    await axios.post(url, payload, {
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 5000
+    });
+  }
+  
+  private generateSignature(data: any): string {
+    const message = JSON.stringify(data);
+    return crypto
+      .createHmac('sha256', process.env.WEBHOOK_SECRET!)
+      .update(message)
+      .digest('hex');
+  }
+}</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gray-50 rounded-lg p-6">
+                                    <h4 class="font-semibold text-gray-800 mb-3">
+                                        <i class="fas fa-plug text-green-500 mr-2"></i>API Adapters
+                                    </h4>
+                                    <p class="text-gray-600 text-sm mb-3">
+                                        Adaptadores para integración con servicios externos.
+                                    </p>
+                                    <div class="code-block text-xs">
+                                        <pre><code>abstract class ExternalServiceAdapter {
+  protected abstract baseUrl: string;
+  protected abstract apiKey: string;
+  
+  protected async request(endpoint: string, options: RequestOptions): Promise&lt;any&gt; {
+    const url = `${this.baseUrl}${endpoint}`;
+    const headers = {
+      'Authorization': `Bearer ${this.apiKey}`,
+      'Content-Type': 'application/json',
+      ...options.headers
+    };
+    
+    try {
+      const response = await axios({
+        method: options.method || 'GET',
+        url,
+        headers,
+        data: options.body,
+        timeout: 10000
+      });
+      
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+  
+  protected abstract handleError(error: any): void;
+}
+
+class WhatsAppAdapter extends ExternalServiceAdapter {
+  protected baseUrl = 'https://graph.facebook.com/v18.0';
+  protected apiKey = process.env.WHATSAPP_API_KEY!;
+  
+  async sendMessage(to: string, message: string): Promise&lt;void&gt; {
+    await this.request('/messages', {
+      method: 'POST',
+      body: {
+        messaging_product: 'whatsapp',
+        to,
+        type: 'text',
+        text: { body: message }
+      }
+    });
+  }
+  
+  protected handleError(error: any): void {
+    logger.error('WhatsApp API error:', error);
+  }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-cash-register text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">EasyPOS</h3>
+                </div>
+                <p class="text-gray-400 mb-6">Documentación Técnica - Sistema de Punto de Venta con Analytics Avanzado</p>
+                <p class="text-sm text-gray-500">
+                    © 2025 EasyPOS. Todos los derechos reservados. Versión 1.0.0 - Octubre 2025
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Vanta.js background
+        VANTA.NET({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x3b82f6,
+            backgroundColor: 0x1a1a2e,
+            points: 8.00,
+            maxDistance: 25.00,
+            spacing: 18.00
+        });
+
+        // Smooth scrolling for table of contents
+        document.querySelectorAll('.toc-fixed a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in TOC
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-fixed a[href^="#"]');
+
+        function highlightActiveSection() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('text-purple-500', 'font-semibold');
+                link.classList.add('text-gray-600');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.remove('text-gray-600');
+                    link.classList.add('text-purple-500', 'font-semibold');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveSection);
+        highlightActiveSection(); // Initial call
+
+        // Copy code blocks functionality
+        document.querySelectorAll('.code-block').forEach(block => {
+            const button = document.createElement('button');
+            button.innerHTML = '<i class="fas fa-copy"></i>';
+            button.className = 'absolute top-2 right-2 bg-gray-700 text-white p-2 rounded text-xs hover:bg-gray-600 transition-colors';
+            button.onclick = () => {
+                const code = block.querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            };
+            
+            block.style.position = 'relative';
+            block.appendChild(button);
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

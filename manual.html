@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Usuario - EasyPOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.waves.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .vanta-canvas { position: fixed !important; top: 0; left: 0; z-index: -1; }
+        .glass-effect { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.1); }
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        .screenshot-frame {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .toc-fixed {
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Background Animation -->
+    <div id="vanta-bg" class="fixed inset-0 z-0"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cash-register text-white text-xl"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-white">EasyPOS</h1>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:text-blue-200 transition-colors">Inicio</a>
+                    <a href="#manual" class="text-white hover:text-blue-200 transition-colors">Manual de Usuario</a>
+                    <a href="tecnico.html" class="text-white hover:text-blue-200 transition-colors">Documentación Técnica</a>
+                    <a href="api.html" class="text-white hover:text-blue-200 transition-colors">API Reference</a>
+                </div>
+                <button type="button" class="md:hidden text-white p-2" aria-label="Menú móvil">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white text-shadow">
+                    Manual de Usuario
+                </h1>
+                <p class="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                    Guía completa para dominar EasyPOS y optimizar la gestión de tu punto de venta
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:w-1/4">
+                <div class="toc-fixed bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+                    <h3 class="text-lg font-bold mb-4 text-gray-800">
+                        <i class="fas fa-list mr-2 text-blue-500"></i>Contenidos
+                    </h3>
+                    <nav class="space-y-2">
+                        <a href="#introduccion" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Introducción</a>
+                        <a href="#instalacion" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Instalación</a>
+                        <a href="#primeros-pasos" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Primeros Pasos</a>
+                        <a href="#gestion-productos" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Gestión de Productos</a>
+                        <a href="#ventas" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Proceso de Ventas</a>
+                        <a href="#analytics" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Dashboard Analytics</a>
+                        <a href="#configuracion" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Configuración</a>
+                        <a href="#solucion-problemas" class="block text-sm text-gray-600 hover:text-blue-500 py-1">Solución de Problemas</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4 space-y-12">
+                <!-- Introduction -->
+                <section id="introduccion" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-play-circle text-blue-500 mr-3"></i>Introducción a EasyPOS
+                    </h2>
+                    <div class="prose max-w-none">
+                        <p class="text-lg text-gray-600 mb-6">
+                            EasyPOS es un sistema integral de punto de venta diseñado para simplificar y optimizar la gestión de tu negocio. 
+                            Con una interfaz intuitiva y capacidades avanzadas de análisis, te permite controlar inventarios, procesar ventas 
+                            y obtener insights valiosos sobre el rendimiento de tu empresa.
+                        </p>
+                        
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                            <h4 class="font-semibold text-blue-800 mb-2">¿Qué encontrarás en este manual?</h4>
+                            <ul class="text-blue-700 space-y-1">
+                                <li>• Guías paso a paso para cada función</li>
+                                <li>• Capturas de pantalla detalladas</li>
+                                <li>• Mejores prácticas recomendadas</li>
+                                <li>• Solución de problemas comunes</li>
+                            </ul>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 mb-2">
+                                    <i class="fas fa-mobile-alt text-blue-500 mr-2"></i>Para Usuarios
+                                </h4>
+                                <p class="text-gray-600 text-sm">
+                                    Aprende a usar todas las funciones de la aplicación móvil, desde la gestión básica 
+                                    hasta las características avanzadas de análisis.
+                                </p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 mb-2">
+                                    <i class="fas fa-chart-line text-green-500 mr-2"></i>Para Administradores
+                                </h4>
+                                <p class="text-gray-600 text-sm">
+                                    Configura el sistema, gestiona usuarios, establece permisos y aprovecha las 
+                                    herramientas de análisis para la toma de decisiones.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section id="instalacion" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-download text-green-500 mr-3"></i>Instalación y Configuración Inicial
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Step 1 -->
+                        <div class="flex items-start">
+                            <div class="step-number">1</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold mb-3 text-gray-800">Descarga la Aplicación</h3>
+                                <p class="text-gray-600 mb-4">
+                                    EasyPOS está disponible para dispositivos Android e iOS. Visita tu tienda de aplicaciones 
+                                    correspondiente y busca "EasyPOS" o usa los siguientes enlaces:
+                                </p>
+                                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                                    <a href="#" class="flex items-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                                        <i class="fab fa-apple text-2xl mr-3"></i>
+                                        <div>
+                                            <div class="text-xs">Descargar en el</div>
+                                            <div class="font-semibold">App Store</div>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+                                        <i class="fab fa-google-play text-2xl mr-3"></i>
+                                        <div>
+                                            <div class="text-xs">Disponible en</div>
+                                            <div class="font-semibold">Google Play</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="screenshot-frame">
+                                    <img src="https://via.placeholder.com/400x200/4F46E5/FFFFFF?text=App+Store+Screens" 
+                                         alt="Pantalla de descarga" class="w-full h-auto">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="flex items-start">
+                            <div class="step-number">2</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold mb-3 text-gray-800">Crea tu Cuenta</h3>
+                                <p class="text-gray-600 mb-4">
+                                    Al abrir la aplicación por primera vez, necesitarás crear una cuenta. Proporciona la siguiente información:
+                                </p>
+                                <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                                    <li>Nombre de tu negocio</li>
+                                    <li>Tu nombre completo</li>
+                                    <li>Correo electrónico válido</li>
+                                    <li>Contraseña segura (mínimo 8 caracteres)</li>
+                                    <li>Tipo de negocio</li>
+                                </ul>
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-exclamation-triangle text-yellow-600 mr-2 mt-1"></i>
+                                        <div>
+                                            <h4 class="font-semibold text-yellow-800 mb-1">Importante</h4>
+                                            <p class="text-yellow-700 text-sm">
+                                                Guarda tu contraseña en un lugar seguro. EasyPOS no almacena contraseñas en texto plano 
+                                                por seguridad, por lo que no podemos recuperarla si la olvidas.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="flex items-start">
+                            <div class="step-number">3</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold mb-3 text-gray-800">Configura tu Negocio</h3>
+                                <p class="text-gray-600 mb-4">
+                                    Después de crear tu cuenta, el asistente de configuración te guiará para establecer:
+                                </p>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <h4 class="font-semibold text-gray-800 mb-2">Información Básica</h4>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• Moneda principal</li>
+                                            <li>• Zona horaria</li>
+                                            <li>• Impuestos locales</li>
+                                            <li>• Información de contacto</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <h4 class="font-semibold text-gray-800 mb-2">Preferencias</h4>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• Idioma de la interfaz</li>
+                                            <li>• Formato de fecha/hora</li>
+                                            <li>• Notificaciones</li>
+                                            <li>• Métodos de pago</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- First Steps -->
+                <section id="primeros-pasos" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-rocket text-purple-500 mr-3"></i>Primeros Pasos
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Dashboard Overview -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Explorando el Dashboard</h3>
+                            <p class="text-gray-600 mb-4">
+                                Una vez configurada tu cuenta, verás el dashboard principal. Aquí tienes un resumen de las secciones más importantes:
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="screenshot-frame">
+                                    <img src="https://via.placeholder.com/400x300/10B981/FFFFFF?text=Dashboard+Principal" 
+                                         alt="Dashboard principal" class="w-full h-auto">
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-home text-white text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Inicio</h4>
+                                            <p class="text-sm text-gray-600">Resumen de ventas del día, productos más vendidos y alertas importantes.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-box text-white text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Productos</h4>
+                                            <p class="text-sm text-gray-600">Gestión completa de inventario, categorías y precios.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-shopping-cart text-white text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Ventas</h4>
+                                            <p class="text-sm text-gray-600">Procesar nuevas ventas y ver historial de transacciones.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center mr-3 mt-1">
+                                            <i class="fas fa-chart-bar text-white text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Analytics</h4>
+                                            <p class="text-sm text-gray-600">Reportes detallados y análisis de rendimiento.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Acciones Rápidas</h3>
+                            <p class="text-gray-600 mb-4">
+                                El dashboard incluye botones de acción rápida para las tareas más comunes:
+                            </p>
+                            
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+                                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-3">
+                                        <i class="fas fa-plus text-white"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-blue-800 mb-2">Nueva Venta</h4>
+                                    <p class="text-blue-700 text-sm">Inicia rápidamente el proceso de venta</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+                                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-3">
+                                        <i class="fas fa-qrcode text-white"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-green-800 mb-2">Escanear Producto</h4>
+                                    <p class="text-green-700 text-sm">Usa la cámara para escanear códigos QR</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+                                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-3">
+                                        <i class="fas fa-file-invoice text-white"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-purple-800 mb-2">Ver Reportes</h4>
+                                    <p class="text-purple-700 text-sm">Accede rápidamente a los reportes del día</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Product Management -->
+                <section id="gestion-productos" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-boxes text-orange-500 mr-3"></i>Gestión de Productos
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Adding Products -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Agregar Nuevos Productos</h3>
+                            
+                            <div class="flex items-start mb-6">
+                                <div class="step-number">1</div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-semibold mb-2">Accede a la sección Productos</h4>
+                                    <p class="text-gray-600 mb-3">Desde el menú principal, selecciona "Productos" y luego presiona el botón "+" en la esquina superior derecha.</p>
+                                    <div class="screenshot-frame max-w-md">
+                                        <img src="https://via.placeholder.com/300x200/F59E0B/FFFFFF?text=Agregar+Producto" 
+                                             alt="Pantalla agregar producto" class="w-full h-auto">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start mb-6">
+                                <div class="step-number">2</div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-semibold mb-2">Completa la Información del Producto</h4>
+                                    <p class="text-gray-600 mb-3">Completa todos los campos obligatorios:</p>
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="grid md:grid-cols-2 gap-4">
+                                            <div>
+                                                <h5 class="font-semibold text-gray-800 mb-2">Información Básica</h5>
+                                                <ul class="text-sm text-gray-600 space-y-1">
+                                                    <li>• Nombre del producto</li>
+                                                    <li>• Código SKU</li>
+                                                    <li>• Categoría</li>
+                                                    <li>• Descripción</li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-semibold text-gray-800 mb-2">Precios e Inventario</h5>
+                                                <ul class="text-sm text-gray-600 space-y-1">
+                                                    <li>• Precio de venta</li>
+                                                    <li>• Precio de costo</li>
+                                                    <li>• Stock inicial</li>
+                                                    <li>• Stock mínimo</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="step-number">3</div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-semibold mb-2">Guarda el Producto</h4>
+                                    <p class="text-gray-600 mb-3">Revisa toda la información y presiona "Guardar". El producto quedará disponible para ventas inmediatamente.</p>
+                                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                        <div class="flex items-start">
+                                            <i class="fas fa-lightbulb text-green-600 mr-2 mt-1"></i>
+                                            <div>
+                                                <h5 class="font-semibold text-green-800 mb-1">Consejo</h5>
+                                                <p class="text-green-700 text-sm">
+                                                    Usa códigos SKU únicos y descriptivos. Esto facilitará la búsqueda 
+                                                    y el seguimiento del inventario a largo plazo.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Categories -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Organizando con Categorías</h3>
+                            <p class="text-gray-600 mb-4">
+                                Las categorías ayudan a organizar tu inventario y facilitan la búsqueda de productos. 
+                                Puedes crear categorías principales y subcategorías.
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Categorías Comunes</h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                            <i class="fas fa-utensils text-orange-500 mr-3"></i>
+                                            <span class="text-gray-700">Alimentos y Bebidas</span>
+                                        </div>
+                                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                            <i class="fas fa-tshirt text-blue-500 mr-3"></i>
+                                            <span class="text-gray-700">Ropa y Accesorios</span>
+                                        </div>
+                                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                            <i class="fas fa-home text-green-500 mr-3"></i>
+                                            <span class="text-gray-700">Hogar y Jardín</span>
+                                        </div>
+                                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                            <i class="fas fa-gamepad text-purple-500 mr-3"></i>
+                                            <span class="text-gray-700">Electrónicos</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Crear Nueva Categoría</h4>
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <ol class="text-sm text-blue-800 space-y-2">
+                                            <li><strong>1.</strong> Ve a Configuración → Categorías</li>
+                                            <li><strong>2.</strong> Presiona "Nueva Categoría"</li>
+                                            <li><strong>3.</strong> Ingresa el nombre</li>
+                                            <li><strong>4.</strong> Asigna un icono (opcional)</li>
+                                            <li><strong>5.</strong> Guarda los cambios</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sales Process -->
+                <section id="ventas" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-cash-register text-green-500 mr-3"></i>Proceso de Ventas
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Quick Sale -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Realizando una Venta Rápida</h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <div class="step-number mb-4">1</div>
+                                    <h4 class="text-lg font-semibold mb-2">Inicia una Nueva Venta</h4>
+                                    <p class="text-gray-600 mb-3">Presiona el botón "Nueva Venta" desde el dashboard o el menú principal.</p>
+                                    <div class="screenshot-frame">
+                                        <img src="https://via.placeholder.com/300x200/10B981/FFFFFF?text=Nueva+Venta" 
+                                             alt="Pantalla nueva venta" class="w-full h-auto">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="step-number mb-4">2</div>
+                                    <h4 class="text-lg font-semibold mb-2">Agrega Productos</h4>
+                                    <p class="text-gray-600 mb-3">Puedes agregar productos de tres formas:</p>
+                                    <ul class="text-sm text-gray-600 space-y-1">
+                                        <li>• Escanear código QR</li>
+                                        <li>• Buscar por nombre</li>
+                                        <li>• Seleccionar de la lista</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-800 mb-4">Pantalla de Venta</h4>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-search text-blue-600 text-xl"></i>
+                                        </div>
+                                        <h5 class="font-semibold text-gray-800 text-sm">Búsqueda</h5>
+                                        <p class="text-xs text-gray-600">Encuentra productos rápidamente</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-calculator text-green-600 text-xl"></i>
+                                        </div>
+                                        <h5 class="font-semibold text-gray-800 text-sm">Cálculo</h5>
+                                        <p class="text-xs text-gray-600">Total automático con impuestos</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-credit-card text-purple-600 text-xl"></i>
+                                        </div>
+                                        <h5 class="font-semibold text-gray-800 text-sm">Pago</h5>
+                                        <p class="text-xs text-gray-600">Múltiples métodos de pago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Métodos de Pago</h3>
+                            <p class="text-gray-600 mb-4">
+                                EasyPOS soporta diversos métodos de pago para adaptarse a las necesidades de tu negocio:
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 hover-lift">
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-money-bill text-green-600 text-xl mr-3"></i>
+                                        <h4 class="font-semibold text-gray-800">Efectivo</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Pago en efectivo tradicional. El sistema calcula el cambio automáticamente.</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 hover-lift">
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-credit-card text-blue-600 text-xl mr-3"></i>
+                                        <h4 class="font-semibold text-gray-800">Tarjeta</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Débito o crédito. Requiere terminal POS externa para procesamiento.</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 hover-lift">
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-mobile-alt text-purple-600 text-xl mr-3"></i>
+                                        <h4 class="font-semibold text-gray-800">Transferencia</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Pago por transferencia bancaria o aplicaciones móviles.</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 hover-lift">
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-qrcode text-orange-600 text-xl mr-3"></i>
+                                        <h4 class="font-semibold text-gray-800">QR/Digital</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Pagos mediante código QR o billeteras digitales.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Receipts -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Gestión de Recibos</h3>
+                            <p class="text-gray-600 mb-4">
+                                Cada venta genera un recibo que puedes compartir con el cliente de varias formas:
+                            </p>
+                            
+                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                                <div class="grid md:grid-cols-3 gap-6">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-print text-white text-xl"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-800 mb-2">Imprimir</h4>
+                                        <p class="text-sm text-gray-600">Conecta una impresora térmica para recibos físicos</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-envelope text-white text-xl"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-800 mb-2">Email</h4>
+                                        <p class="text-sm text-gray-600">Envía el recibo por correo electrónico al cliente</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-share text-white text-xl"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-800 mb-2">WhatsApp</h4>
+                                        <p class="text-sm text-gray-600">Comparte el recibo directamente por WhatsApp</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Dashboard -->
+                <section id="analytics" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-chart-line text-indigo-500 mr-3"></i>Dashboard Analytics
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Overview Cards -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Métricas Principales</h3>
+                            <p class="text-gray-600 mb-6">
+                                El dashboard de analytics proporciona una vista completa del rendimiento de tu negocio 
+                                con métricas en tiempo real y análisis históricos.
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-semibold text-blue-800">Ventas del Día</h4>
+                                        <i class="fas fa-dollar-sign text-blue-600"></i>
+                                    </div>
+                                    <p class="text-2xl font-bold text-blue-900">$2,450</p>
+                                    <p class="text-sm text-blue-600">+12% vs ayer</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-semibold text-green-800">Transacciones</h4>
+                                        <i class="fas fa-receipt text-green-600"></i>
+                                    </div>
+                                    <p class="text-2xl font-bold text-green-900">127</p>
+                                    <p class="text-sm text-green-600">+8% vs ayer</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-semibold text-purple-800">Ticket Promedio</h4>
+                                        <i class="fas fa-calculator text-purple-600"></i>
+                                    </div>
+                                    <p class="text-2xl font-bold text-purple-900">$19.29</p>
+                                    <p class="text-sm text-purple-600">+3% vs ayer</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-semibold text-orange-800">Productos Vendidos</h4>
+                                        <i class="fas fa-box text-orange-600"></i>
+                                    </div>
+                                    <p class="text-2xl font-bold text-orange-900">342</p>
+                                    <p class="text-sm text-orange-600">+15% vs ayer</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Visualizaciones de Datos</h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                    <h4 class="font-semibold text-gray-800 mb-4">Ventas por Hora</h4>
+                                    <div class="screenshot-frame">
+                                        <img src="https://via.placeholder.com/400x250/6366F1/FFFFFF?text=Gráfico+Ventas+por+Hora" 
+                                             alt="Gráfico de ventas por hora" class="w-full h-auto">
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-3">
+                                        Identifica los horarios de mayor actividad para optimizar la atención al cliente.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                    <h4 class="font-semibold text-gray-800 mb-4">Productos Más Vendidos</h4>
+                                    <div class="screenshot-frame">
+                                        <img src="https://via.placeholder.com/400x250/10B981/FFFFFF?text=Top+Productos" 
+                                             alt="Top productos" class="w-full h-auto">
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-3">
+                                        Conoce qué productos son los favoritos de tus clientes para mejorar tu inventario.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reports -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Reportes Detallados</h3>
+                            <p class="text-gray-600 mb-4">
+                                EasyPOS genera automáticamente diversos reportes para ayudarte a tomar decisiones informadas:
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Reporte de Ventas</h4>
+                                            <p class="text-sm text-gray-600">Análisis detallado de todas las transacciones</p>
+                                        </div>
+                                        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition-colors">
+                                            <i class="fas fa-download mr-1"></i>Descargar
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Inventario</h4>
+                                            <p class="text-sm text-gray-600">Estado actual del inventario con alertas de stock</p>
+                                        </div>
+                                        <button class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition-colors">
+                                            <i class="fas fa-download mr-1"></i>Descargar
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800">Análisis de Clientes</h4>
+                                            <p class="text-sm text-gray-600">Comportamiento y preferencias de compra</p>
+                                        </div>
+                                        <button class="bg-purple-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-600 transition-colors">
+                                            <i class="fas fa-download mr-1"></i>Descargar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configuration -->
+                <section id="configuracion" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-cog text-red-500 mr-3"></i>Configuración del Sistema
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Business Settings -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Información del Negocio</h3>
+                            <p class="text-gray-600 mb-4">
+                                Mantén actualizada la información de tu negocio para que aparezca correctamente en los recibos y reportes.
+                            </p>
+                            
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Datos Básicos</h4>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del Negocio</label>
+                                                <input type="text" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Mi Negocio S.A.">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                                                <textarea class="w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="Calle Principal 123, Ciudad"></textarea>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                                                <input type="tel" class="w-full p-2 border border-gray-300 rounded-md" placeholder="+1 234 567 8900">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Configuración Fiscal</h4>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">RUC/NIF</label>
+                                                <input type="text" class="w-full p-2 border border-gray-300 rounded-md" placeholder="1234567890123">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">% de Impuesto</label>
+                                                <input type="number" class="w-full p-2 border border-gray-300 rounded-md" placeholder="16" min="0" max="100">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Moneda</label>
+                                                <select class="w-full p-2 border border-gray-300 rounded-md">
+                                                    <option>USD - Dólar Americano</option>
+                                                    <option>EUR - Euro</option>
+                                                    <option>MXN - Peso Mexicano</option>
+                                                    <option>COP - Peso Colombiano</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Management -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Gestión de Usuarios</h3>
+                            <p class="text-gray-600 mb-4">
+                                Como administrador, puedes crear cuentas para tus empleados y asignarles permisos específicos.
+                            </p>
+                            
+                            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-4 border border-red-200">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center mr-3">
+                                            <i class="fas fa-user-shield text-white"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-red-800">Administrador</h4>
+                                    </div>
+                                    <p class="text-red-700 text-sm">Acceso completo a todas las funciones y configuraciones</p>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                            <i class="fas fa-cash-register text-white"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-blue-800">Cajero</h4>
+                                    </div>
+                                    <p class="text-blue-700 text-sm">Procesar ventas, ver productos, acceso limitado a reportes</p>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                                            <i class="fas fa-box text-white"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-green-800">Inventario</h4>
+                                    </div>
+                                    <p class="text-green-700 text-sm">Gestionar productos, categorías y control de stock</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-blue-800 mb-2">Agregar Nuevo Usuario</h4>
+                                <ol class="text-blue-700 text-sm space-y-1">
+                                    <li><strong>1.</strong> Ve a Configuración → Usuarios</li>
+                                    <li><strong>2.</strong> Presiona "Agregar Usuario"</li>
+                                    <li><strong>3.</strong> Completa la información básica</li>
+                                    <li><strong>4.</strong> Asigna un rol (permisos)</li>
+                                    <li><strong>5.</strong> Envía la invitación por email</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section id="solucion-problemas" class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-tools text-yellow-600 mr-3"></i>Solución de Problemas
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Common Issues -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Problemas Comunes</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                    <h4 class="font-semibold text-red-800 mb-2">
+                                        <i class="fas fa-wifi mr-2"></i>No puedo sincronizar los datos
+                                    </h4>
+                                    <div class="text-red-700 text-sm space-y-2">
+                                        <p><strong>Solución:</strong></p>
+                                        <ol class="list-decimal list-inside space-y-1">
+                                            <li>Verifica tu conexión a internet</li>
+                                            <li>Reinicia la aplicación</li>
+                                            <li>Ve a Configuración → Sincronización y presiona "Sincronizar ahora"</li>
+                                            <li>Si el problema persiste, contacta soporte técnico</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                    <h4 class="font-semibold text-yellow-800 mb-2">
+                                        <i class="fas fa-camera mr-2"></i>El escáner QR no funciona
+                                    </h4>
+                                    <div class="text-yellow-700 text-sm space-y-2">
+                                        <p><strong>Solución:</strong></p>
+                                        <ol class="list-decimal list-inside space-y-1">
+                                            <li>Asegúrate de que la cámara esté limpia</li>
+                                            <li>Concede permisos de cámara a la aplicación</li>
+                                            <li>Verifica que haya suficiente luz</li>
+                                            <li>Mantén el código QR a 15-20 cm de distancia</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <h4 class="font-semibold text-blue-800 mb-2">
+                                        <i class="fas fa-print mr-2"></i>No puedo imprimir recibos
+                                    </h4>
+                                    <div class="text-blue-700 text-sm space-y-2">
+                                        <p><strong>Solución:</strong></p>
+                                        <ol class="list-decimal list-inside space-y-1">
+                                            <li>Verifica la conexión de la impresora</li>
+                                            <li>Asegúrate de tener papel térmico</li>
+                                            <li>Reinicia la impresora y el dispositivo</li>
+                                            <li>Verifica la configuración de la impresora en la app</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Support Contact -->
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4 text-gray-800">Soporte Técnico</h3>
+                            <p class="text-gray-600 mb-4">
+                                Si no puedes resolver un problema con las soluciones anteriores, nuestro equipo de soporte está disponible para ayudarte:
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                                    <h4 class="font-semibold text-purple-800 mb-4">
+                                        <i class="fas fa-envelope mr-2"></i>Contacto por Email
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <p class="text-sm text-purple-700"><strong>Soporte General:</strong></p>
+                                            <a href="mailto:soporte@easypos.com" class="text-purple-600 hover:text-purple-800">soporte@easypos.com</a>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-purple-700"><strong>Soporte Técnico:</strong></p>
+                                            <a href="mailto:tecnico@easypos.com" class="text-purple-600 hover:text-purple-800">tecnico@easypos.com</a>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-purple-700"><strong>Tiempo de respuesta:</strong> 24-48 horas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                                    <h4 class="font-semibold text-green-800 mb-4">
+                                        <i class="fas fa-phone mr-2"></i>Soporte Telefónico
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <p class="text-sm text-green-700"><strong>Teléfono:</strong></p>
+                                            <a href="tel:+1234567890" class="text-green-600 hover:text-green-800">+1 (234) 567-8900</a>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-green-700"><strong>Horario:</strong></p>
+                                            <p class="text-green-600">Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-green-700"><strong>Zona horaria:</strong> EST (UTC-5)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-cash-register text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">EasyPOS</h3>
+                </div>
+                <p class="text-gray-400 mb-6">Manual de Usuario - Sistema de Punto de Venta con Analytics Avanzado</p>
+                <p class="text-sm text-gray-500">
+                    © 2025 EasyPOS. Todos los derechos reservados. Última actualización: Octubre 2025
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Vanta.js background
+        VANTA.WAVES({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x1a1a2e,
+            shininess: 30.00,
+            waveHeight: 15.00,
+            waveSpeed: 0.75,
+            zoom: 0.65
+        });
+
+        // Smooth scrolling for table of contents
+        document.querySelectorAll('.toc-fixed a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in TOC
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-fixed a[href^="#"]');
+
+        function highlightActiveSection() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('text-blue-500', 'font-semibold');
+                link.classList.add('text-gray-600');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.remove('text-gray-600');
+                    link.classList.add('text-blue-500', 'font-semibold');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveSection);
+        highlightActiveSection(); // Initial call
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>
